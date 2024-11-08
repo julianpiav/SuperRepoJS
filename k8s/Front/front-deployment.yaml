@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      containers:
+        - name: frontend
+          image: julianpi2003/frontend-image:latest  
+          ports:
+            - containerPort: 80
+          env:
+            - name: REACT_APP_BFF_URL
+              value: "http://bff-service:5000"
