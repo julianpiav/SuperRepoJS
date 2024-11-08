@@ -35,7 +35,7 @@ jobs:
 
       # Paso 5: Configurar `kubectl`
       - name: Set up kubectl
-        uses: azure/setup-kubectl@v2
+        uses: azure/setup-kubectl@v3  # Usar la versión v3
         with:
           version: 'latest'
 
