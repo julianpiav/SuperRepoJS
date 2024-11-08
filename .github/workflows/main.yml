@@ -35,18 +35,23 @@ jobs:
 
       # Paso 5: Configurar `kubectl`
       - name: Set up kubectl
-        uses: azure/setup-kubectl@v3  # Usar la versión v3
+        uses: azure/setup-kubectl@v3
         with:
           version: 'latest'
 
-      # Paso 6: Configurar `kubeconfig` usando el secreto en GitHub
+      # Paso 6: Crear el directorio `.kube` si no existe
+      - name: Create .kube directory
+        run: |
+          mkdir -p $HOME/.kube
+
+      # Paso 7: Configurar `kubeconfig` usando el secreto en GitHub
       - name: Configure kubectl to connect to the cluster
         env:
           KUBECONFIG: ${{ secrets.KUBECONFIG }}
         run: |
           echo "${KUBECONFIG}" | base64 --decode > $HOME/.kube/config
 
-      # Paso 7: Aplicar los manifiestos de Kubernetes
+      # Paso 8: Aplicar los manifiestos de Kubernetes
       - name: Apply Kubernetes manifests
         run: |
           kubectl apply -f k8s/frontend-deployment.yaml
