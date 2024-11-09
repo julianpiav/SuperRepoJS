@@ -1,28 +1,32 @@
-# Usa una imagen base de Node.js
-FROM node:14
+# Usa una imagen base de Node para compilar la aplicación
+FROM node:14 AS build
 
-# Establece el directorio de trabajo dentro del contenedor
+# Establece el directorio de trabajo
 WORKDIR /app
 
-# Copia el archivo package.json y package-lock.json
+# Copia los archivos package.json y package-lock.json
 COPY package*.json ./
 
 # Instala las dependencias
 RUN npm install
 
-# Copia el resto de los archivos
+# Copia el resto del código de la aplicación
 COPY . .
-# Define la variable de entorno directamente en el Dockerfile
-ENV REACT_APP_BFF_URL=http://localhost:5000
 
 # Construye la aplicación para producción
 RUN npm run build
 
-# Usa una imagen ligera de servidor para servir el contenido de `build`
+# Usa una imagen ligera de Nginx para servir los archivos
 FROM nginx:alpine
-COPY --from=0 /app/build /usr/share/nginx/html
+
+# Copia la configuración personalizada de Nginx, si tienes una
+# COPY nginx.conf /etc/nginx/nginx.conf
+
+# Copia los archivos de construcción desde el contenedor de build
+COPY --from=build /app/build /usr/share/nginx/html
 
 # Expone el puerto 80
 EXPOSE 80
 
-# No se necesita CMD porque Nginx usa el valor predeterminado
+# Inicia Nginx
+CMD ["nginx", "-g", "daemon off;"]

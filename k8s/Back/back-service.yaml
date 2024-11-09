@@ -3,10 +3,10 @@ kind: Service
 metadata:
   name: bff-service
 spec:
+  type: NodePort
+  ports:
+    - port: 5000        
+      targetPort: 5000  
+      nodePort: 30001     
   selector:
     app: bff
-  ports:
-    - protocol: TCP
-      port: 5000
-      targetPort: 5000
-  type: ClusterIP

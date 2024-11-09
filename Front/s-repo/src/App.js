@@ -4,17 +4,17 @@ function App() {
   const [inspiration, setInspiration] = useState("Haz clic y prepárate para una revelación...");
 
   const getInspiration = async () => {
-    try {
-      const response = await fetch(`${process.env.REACT_APP_BFF_URL}/api/inspire`);
-      if (!response.ok) throw new Error('Error al obtener la inspiración');
-      const data = await response.json();
-      setInspiration(data.message);
-    } catch (error) {
-      console.error("Error fetching inspiration:", error);
-      setInspiration("Hubo un problema al obtener la inspiración. Inténtalo de nuevo.");
-    }
-  };
-  
+  try {
+    const response = await fetch(`${process.env.REACT_APP_BFF_URL}`);
+    if (!response.ok) throw new Error('Error al obtener la inspiración');
+    const data = await response.json();
+    setInspiration(data.message);
+  } catch (error) {
+    console.error("Error fetching inspiration:", error);
+    setInspiration("Hubo un problema al obtener la inspiración. Inténtalo de nuevo.");
+  }
+};
+
 
   const getRandomColor = () => {
     const colors = ["#FF6347", "#FFD700", "#ADFF2F", "#20B2AA", "#FF69B4"];

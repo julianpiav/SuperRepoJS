@@ -14,6 +14,6 @@ spec:
     spec:
       containers:
       - name: bff
-        image: julianpi2003/bff-image:latest  # Incluye el nombre de usuario aquí
+        image: julianpi2003/bff-image:latest 
         ports:
           - containerPort: 5000
